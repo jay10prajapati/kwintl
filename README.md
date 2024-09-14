@@ -22,31 +22,49 @@ The project is divided into two main parts:
 
 ### Frontend (React.js)
 
-1. Navigate to the frontend directory:
+1. **Install Node.js and npm:**
+
+   - **Windows:** Download and install Node.js from the official website ([https://nodejs.org/](https://nodejs.org/)). The installer will also include npm.
+   - **macOS:** Install Node.js using Homebrew:
+     ```bash
+     brew install node
+     ```
+
+2. **Verify Node.js and npm installation:**
+   Open your terminal or command prompt and run:
+
+   ```bash
+   node -v
+   npm -v
+   ```
+
+   You should see the installed versions of Node.js and npm.
+
+3. **Navigate to the frontend directory:**
 
    ```
    cd frontend
    ```
 
-2. Install dependencies:
+4. **Install dependencies:**
 
    ```
    npm install
    ```
 
-3. (Step for future) Create a `.env` file in the frontend directory and add necessary environment variables:
+5. **Create a `.env` file in the frontend directory and add necessary environment variables:**
 
    ```
    REACT_APP_API_URL=http://localhost:5173
    ```
 
-4. Start the development server:
+6. **Start the development server:**
 
    ```
    npm run dev
    ```
 
-5. Open your browser and go to `http://localhost:5173`
+7. **Open your browser and go to `http://localhost:5173`**
 
 ### Backend (FastAPI)
 
