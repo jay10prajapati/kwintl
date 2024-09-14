@@ -16,7 +16,7 @@ kwintl is a powerful stock screening and analysis tool, similar to screener.in. 
 The project is divided into two main parts:
 
 1. Frontend: Built with React.js
-2. Backend: (Add information about the backend technology used)
+2. Backend: Built with FastAPI (Python)
 
 ## Setup Instructions
 
@@ -48,7 +48,7 @@ The project is divided into two main parts:
 
 5. Open your browser and go to `http://localhost:5173`
 
-### Backend
+### Backend (FastAPI)
 
 1. Navigate to the backend directory:
 
@@ -56,17 +56,42 @@ The project is divided into two main parts:
    cd backend
    ```
 
-2. Install dependencies:
+2. Create a Python virtual environment:
 
    ```
-   npm install
+   python -m venv venv
    ```
 
-3. (Step for future) Create a `.env` file in the backend directory and add necessary environment variables:
+3. Activate the virtual environment:
+
+   - On Windows:
+     ```
+     venv\Scripts\activate
+     ```
+   - On macOS and Linux:
+     ```
+     source venv/bin/activate
+     ```
+
+4. Install dependencies:
+
    ```
-   PORT=5000
+   pip install -r requirements.txt
+   ```
+
+5. (Step for future) Create a `.env` file in the backend directory and add necessary environment variables:
+
+   ```
    DATABASE_URL=your_database_connection_string
    ```
+
+6. Start the FastAPI server:
+
+   ```
+   uvicorn main:app --reload
+   ```
+
+   The backend API will be available at `http://localhost:8000`.
 
 ## Running the Application
 
@@ -80,6 +105,29 @@ npm run dev
 ```
 
 The application will be available at `http://localhost:5173`.
+
+### Backend
+
+To start the FastAPI backend server:
+
+1. Activate the virtual environment (if not already activated):
+
+   - On Windows:
+     ```
+     venv\Scripts\activate
+     ```
+   - On macOS and Linux:
+     ```
+     source venv/bin/activate
+     ```
+
+2. Start the server:
+   ```
+   cd backend
+   uvicorn main:app --reload
+   ```
+
+The API will be available at `http://localhost:8000`. You can access the API documentation at `http://localhost:8000/docs`.
 
 ### Production Build
 
