@@ -1,13 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from typing import List
+from typing import List, Dict, Union, Optional
 from pydantic import BaseModel
 
 app = FastAPI()
 
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173"],  # Add your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -97,3 +98,84 @@ def get_financial_data():
         }
     ]
     return data
+
+# Mock data - replace this with actual database queries in a real application
+balance_sheet_data = [
+    {
+        "item": "Equity Capital",
+        "Mar2024": 362,
+        "Mar2023": 366,
+        "Mar2022": 366,
+        "Mar2021": 366,
+        "Mar2020": 366,
+    },
+    {
+        "item": "Reserves",
+        "Mar2024": 90127,
+        "Mar2023": 90058,
+        "Mar2022": 90058,
+        "Mar2021": 90058,
+        "Mar2020": 90058,
+    },
+    {
+        "item": "Borrowings",
+        "Mar2024": 8021,
+        "Mar2023": 7688,
+        "Mar2022": 7818,
+        "Mar2021": 7795,
+        "Mar2020": 8174,
+        "isExpandable": True,
+        "subItems": [
+            {
+                "item": "Long term Borrowings",
+                "Mar2024": 0,
+                "Mar2023": 0,
+                "Mar2022": 0,
+                "Mar2021": 0,
+                "Mar2020": 0,
+            },
+            {
+                "item": "Short term Borrowings",
+                "Mar2024": 0,
+                "Mar2023": 0,
+                "Mar2022": 0,
+                "Mar2021": 0,
+                "Mar2020": 0,
+            },
+            {
+                "item": "Lease Liabilities",
+                "Mar2024": 8021,
+                "Mar2023": 7688,
+                "Mar2022": 7818,
+                "Mar2021": 7795,
+                "Mar2020": 8174,
+            },
+            {
+                "item": "Preference Capital",
+                "Mar2024": 0,
+                "Mar2023": 0,
+                "Mar2022": 0,
+                "Mar2021": 0,
+                "Mar2020": 0,
+            },
+            {
+                "item": "Other Borrowings",
+                "Mar2024": 0,
+                "Mar2023": 0,
+                "Mar2022": 0,
+                "Mar2021": 0,
+                "Mar2020": 0,
+            },
+        ],
+    },
+    # ... (add the rest of the balance sheet items)
+]
+
+@app.get("/api/balance-sheet")
+async def get_balance_sheet() -> List[Dict[str, Union[str, int, bool, Optional[List[Dict]]]]]:
+    print("Balance sheet endpoint hit")
+    return balance_sheet_data
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

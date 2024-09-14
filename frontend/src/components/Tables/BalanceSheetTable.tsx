@@ -1,4 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+
+interface ImportMetaEnv {
+  VITE_API_URL: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
+interface ImportMetaEnv {
+  VITE_API_URL: string; // Ensure VITE_API_URL is defined here
+}
 
 type BalanceSheetItem = {
   item: string;
@@ -7,159 +20,192 @@ type BalanceSheetItem = {
   subItems?: BalanceSheetItem[];
 };
 
-const balanceSheetData: BalanceSheetItem[] = [
-  {
-    item: 'Equity Capital',
-    Mar2024: 362,
-    Mar2023: 366 /* ... add other years ... */,
-    Mar2022: 366 /* ... add other years ... */,
-    Mar2021: 366 /* ... add other years ... */,
-    Mar2020: 366 /* ... add other years ... */,
-  },
-  {
-    item: 'Reserves',
-    Mar2024: 90127,
-    Mar2023: 90058,
-    Mar2022: 90058,
-    Mar2021: 90058,
-    Mar2020: 90058 /* ... */,
-  },
-  {
-    item: 'Borrowings',
-    Mar2024: 8021,
-    Mar2023: 7688,
-    Mar2022: 7818,
-    Mar2021: 7795,
-    Mar2020: 8174,
-    isExpandable: true,
-    subItems: [
-      {
-        item: 'Long term Borrowings',
-        Mar2024: 0,
-        Mar2023: 0,
-        Mar2022: 0,
-        Mar2021: 0,
-        Mar2020: 0,
-        // ... other years ...
-      },
-      {
-        item: 'Short term Borrowings',
-        Mar2024: 0,
-        Mar2023: 0,
-        Mar2022: 0,
-        Mar2021: 0,
-        Mar2020: 0,
-        // ... other years ...
-      },
-      {
-        item: 'Lease Liabilities',
-        Mar2024: 8021,
-        Mar2023: 7688,
-        Mar2022: 7818,
-        Mar2021: 7795,
-        Mar2020: 8174,
-        // ... other years ...
-      },
-      {
-        item: 'Preference Capital',
-        Mar2024: 0,
-        Mar2023: 0,
-        Mar2022: 0,
-        Mar2021: 0,
-        Mar2020: 0,
-        // ... other years ...
-      },
-      {
-        item: 'Other Borrowings',
-        Mar2024: 0,
-        Mar2023: 0,
-        Mar2022: 0,
-        Mar2021: 0,
-        Mar2020: 0,
-        // ... other years ...
-      },
-    ],
-  },
-  {
-    item: 'Other Liabilities',
-    Mar2024: 46962,
-    Mar2023: 44747,
-    Mar2022: 44747,
-    Mar2021: 44747,
-    Mar2020: 44747 /* ... */,
-  },
-  {
-    item: 'Total Liabilities',
-    Mar2024: 145472,
-    Mar2023: 142859,
-    Mar2022: 142859,
-    Mar2021: 142859,
-    Mar2020: 142859 /* ... */,
-  },
-  {
-    item: 'Fixed Assets',
-    Mar2024: 19604,
-    Mar2023: 20515,
-    Mar2022: 20515,
-    Mar2021: 20515,
-    Mar2020: 20515 /* ... */,
-  },
-  {
-    item: 'CWIP',
-    Mar2024: 1564,
-    Mar2023: 1234,
-    Mar2022: 1234,
-    Mar2021: 1234,
-    Mar2020: 1234 /* ... */,
-  },
-  {
-    item: 'Investments',
-    Mar2024: 31762,
-    Mar2023: 37163,
-    Mar2022: 37163,
-    Mar2021: 37163,
-    Mar2020: 37163 /* ... */,
-  },
-  {
-    item: 'Other Assets',
-    Mar2024: 92542,
-    Mar2023: 83947,
-    Mar2022: 83947,
-    Mar2021: 83947,
-    Mar2020: 83947 /* ... */,
-  },
-  {
-    item: 'Total Assets',
-    Mar2024: 145472,
-    Mar2023: 142859,
-    Mar2022: 142859,
-    Mar2021: 142859,
-    Mar2020: 142859 /* ... */,
-  },
-  {
-    item: 'Cash and Bank Balances',
-    Mar2024: 15234,
-    Mar2023: 14567,
-    Mar2022: 13890,
-    Mar2021: 12345,
-    Mar2020: 11234,
-  },
-  {
-    item: 'Loans and Advances',
-    Mar2024: 78234,
-    Mar2023: 75678,
-    Mar2022: 72345,
-    Mar2021: 70123,
-    Mar2020: 68901,
-  },
-];
+//   {
+//     item: 'Equity Capital',
+//     Mar2024: 362,
+//     Mar2023: 366 /* ... add other years ... */,
+//     Mar2022: 366 /* ... add other years ... */,
+//     Mar2021: 366 /* ... add other years ... */,
+//     Mar2020: 366 /* ... add other years ... */,
+//   },
+//   {
+//     item: 'Reserves',
+//     Mar2024: 90127,
+//     Mar2023: 90058,
+//     Mar2022: 90058,
+//     Mar2021: 90058,
+//     Mar2020: 90058 /* ... */,
+//   },
+//   {
+//     item: 'Borrowings',
+//     Mar2024: 8021,
+//     Mar2023: 7688,
+//     Mar2022: 7818,
+//     Mar2021: 7795,
+//     Mar2020: 8174,
+//     isExpandable: true,
+//     subItems: [
+//       {
+//         item: 'Long term Borrowings',
+//         Mar2024: 0,
+//         Mar2023: 0,
+//         Mar2022: 0,
+//         Mar2021: 0,
+//         Mar2020: 0,
+//         // ... other years ...
+//       },
+//       {
+//         item: 'Short term Borrowings',
+//         Mar2024: 0,
+//         Mar2023: 0,
+//         Mar2022: 0,
+//         Mar2021: 0,
+//         Mar2020: 0,
+//         // ... other years ...
+//       },
+//       {
+//         item: 'Lease Liabilities',
+//         Mar2024: 8021,
+//         Mar2023: 7688,
+//         Mar2022: 7818,
+//         Mar2021: 7795,
+//         Mar2020: 8174,
+//         // ... other years ...
+//       },
+//       {
+//         item: 'Preference Capital',
+//         Mar2024: 0,
+//         Mar2023: 0,
+//         Mar2022: 0,
+//         Mar2021: 0,
+//         Mar2020: 0,
+//         // ... other years ...
+//       },
+//       {
+//         item: 'Other Borrowings',
+//         Mar2024: 0,
+//         Mar2023: 0,
+//         Mar2022: 0,
+//         Mar2021: 0,
+//         Mar2020: 0,
+//         // ... other years ...
+//       },
+//     ],
+//   },
+//   {
+//     item: 'Other Liabilities',
+//     Mar2024: 46962,
+//     Mar2023: 44747,
+//     Mar2022: 44747,
+//     Mar2021: 44747,
+//     Mar2020: 44747 /* ... */,
+//   },
+//   {
+//     item: 'Total Liabilities',
+//     Mar2024: 145472,
+//     Mar2023: 142859,
+//     Mar2022: 142859,
+//     Mar2021: 142859,
+//     Mar2020: 142859 /* ... */,
+//   },
+//   {
+//     item: 'Fixed Assets',
+//     Mar2024: 19604,
+//     Mar2023: 20515,
+//     Mar2022: 20515,
+//     Mar2021: 20515,
+//     Mar2020: 20515 /* ... */,
+//   },
+//   {
+//     item: 'CWIP',
+//     Mar2024: 1564,
+//     Mar2023: 1234,
+//     Mar2022: 1234,
+//     Mar2021: 1234,
+//     Mar2020: 1234 /* ... */,
+//   },
+//   {
+//     item: 'Investments',
+//     Mar2024: 31762,
+//     Mar2023: 37163,
+//     Mar2022: 37163,
+//     Mar2021: 37163,
+//     Mar2020: 37163 /* ... */,
+//   },
+//   {
+//     item: 'Other Assets',
+//     Mar2024: 92542,
+//     Mar2023: 83947,
+//     Mar2022: 83947,
+//     Mar2021: 83947,
+//     Mar2020: 83947 /* ... */,
+//   },
+//   {
+//     item: 'Total Assets',
+//     Mar2024: 145472,
+//     Mar2023: 142859,
+//     Mar2022: 142859,
+//     Mar2021: 142859,
+//     Mar2020: 142859 /* ... */,
+//   },
+//   {
+//     item: 'Cash and Bank Balances',
+//     Mar2024: 15234,
+//     Mar2023: 14567,
+//     Mar2022: 13890,
+//     Mar2021: 12345,
+//     Mar2020: 11234,
+//   },
+//   {
+//     item: 'Loans and Advances',
+//     Mar2024: 78234,
+//     Mar2023: 75678,
+//     Mar2022: 72345,
+//     Mar2021: 70123,
+//     Mar2020: 68901,
+//   },
+// ];
 
-const years = ['Mar 2024', 'Mar 2023', 'Mar 2022', 'Mar 2021', 'Mar 2020'];
+const years: string[] = [
+  'Mar 2024',
+  'Mar 2023',
+  'Mar 2022',
+  'Mar 2021',
+  'Mar 2020',
+]; // Explicitly type the years array
 
 const BalanceSheetTable: React.FC = () => {
+  const [balanceSheetData, setBalanceSheetData] = useState<BalanceSheetItem[]>(
+    [],
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState(false);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const tableRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchBalanceSheetData = async () => {
+      try {
+        console.log(
+          'Fetching data from:',
+          `${import.meta.env.VITE_API_URL}/api/balance-sheet`, // Use import.meta.env for Vite
+        );
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/balance-sheet`, // Use import.meta.env for Vite
+        );
+        console.log('Response:', response.data);
+        setBalanceSheetData(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching balance sheet data:', err);
+        setError('Failed to fetch balance sheet data');
+        setLoading(false);
+      }
+    };
+
+    fetchBalanceSheetData();
+  }, []);
 
   useEffect(() => {
     const checkTableOverflow = () => {
@@ -186,6 +232,9 @@ const BalanceSheetTable: React.FC = () => {
       return newSet;
     });
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="flex">
@@ -265,9 +314,13 @@ const BalanceSheetTable: React.FC = () => {
           <h3 className="text-lg font-semibold mb-2">Table Guide</h3>
           <p className="text-sm mb-2">Scroll horizontally to view all years.</p>
           <ul className="text-sm list-disc list-inside">
-            {years.map((year) => (
-              <li key={year}>{year}</li>
-            ))}
+            {years.map(
+              (
+                year: string, // Explicitly type the year parameter
+              ) => (
+                <li key={year}>{year}</li>
+              ),
+            )}
           </ul>
         </div>
       )}
