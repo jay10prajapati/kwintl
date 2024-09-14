@@ -7,7 +7,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -20,7 +20,7 @@ class Service(BaseModel):
 
 @app.get("/api/data")
 def get_data():
-    return {"message": "Hello from FastAPI...123!"}
+    return {"message": "Hello from FastAPI!"}
 
 @app.get("/api/services", response_model=List[Service])
 def get_services():
