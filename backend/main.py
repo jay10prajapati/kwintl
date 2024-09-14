@@ -99,6 +99,7 @@ def get_financial_data():
     ]
     return data
 
+
 # Mock data - replace this with actual database queries in a real application
 balance_sheet_data = [
     {
